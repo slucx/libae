@@ -25,7 +25,7 @@ $(LIB_SHARED): $(OBJ_MEM) $(OBJ_AE) $(OBJ_ANET) $(OBJ_ALGO) $(OBJ_UTIL)
 $(LIB_STATIC): $(OBJ_MEM) $(OBJ_AE) $(OBJ_ANET) $(OBJ_ALGO) $(OBJ_UTIL)
 	$(AR) -o $(LIB_STATIC) $^
 
-install: $(LIB_SHARED) $(LIB_SHARED)
+install: $(LIB_STATIC) $(LIB_SHARED)
 	-([ -d $(INSTALL) ] || mkdir $(INSTALL))
 	-(cp $(LIB_STATIC) $(LIB_SHARED) *.h $(INSTALL))
 
