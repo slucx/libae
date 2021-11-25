@@ -12,7 +12,7 @@ OBJ_MEM := zmalloc.o
 OBJ_AE := ae.o
 OBJ_ANET := anet.o endianconv.o
 OBJ_ALGO := sds.o adlist.o dict.o skiplist.o pqsort.o
-OBJ_UTIL := sha1.o crc16.o crc64.o util.o
+OBJ_UTIL := sha1.o crc16.o crc64.o util.o base64.o cJSON.o
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
