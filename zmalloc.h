@@ -86,4 +86,39 @@ void zlibc_free(void *ptr);
 size_t zmalloc_size(void *ptr);
 #endif
 
+#ifdef __GNUC__
+#include <stdio.h>
+#include <stdlib.h>
+
+static inline void __cleanup_ptr(void *ptr_addr) {
+    void **pptr = (void **)ptr_addr;
+    if (pptr && *pptr) {
+        printf("DEBUG: AUTO FREE MEMORY %p\n", *pptr);
+        free(*pptr);
+        *pptr = NULL;
+    }
+}
+
+static inline void __cleanup_fp(void *fp_addr) {
+    FILE **pptr = (FILE **)fp_addr;
+    if (pptr && *pptr) {
+        printf("DEBUG: AUTO CLOSING FILE %p\n", *pptr);
+        fclose(*pptr);
+        *pptr = NULL;
+    }
+}
+
+#define auto_free(free_func) __attribute__((cleanup(free_func)))
+#define auto_free_ptr __attribute__((cleanup(__cleanup_ptr)))
+#define auto_close_file __attribute__((cleanup(__cleanup_fp)))
+
+#else
+
+#define may_error printf("Please ensure manual memory management (e.g., free()) is correctly implemented to prevent leaks.\n");
+#define auto_free(free_func) may_error
+#define auto_free_ptr may_error
+#define auto_close_file may_error
+
+#endif
+
 #endif /* __ZMALLOC_H */
